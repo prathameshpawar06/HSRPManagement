@@ -1,0 +1,23 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HSRP_Management_API.Models
+{
+    public class LoginModel
+    {
+        public string? Username { get; set; }
+
+        //[EmailAddress(ErrorMessage = "Invalid email format")]
+        //public string? Email { get; set; }
+
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must be a valid 10-digit Indian number")]
+        public string? PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; } = null!;
+
+        public bool IsContactProvided()
+        {
+            return !string.IsNullOrWhiteSpace(Username) || !string.IsNullOrWhiteSpace(PhoneNumber);
+        }
+    }
+}

@@ -1,0 +1,27 @@
+Hsrp management
+
+1.login 
+->Admin
+->employe login
+
+2. Admin can add employe and add stock and add branches.
+3. Employe update Stock
+
+2.braches (mangalwedha,mohol,pandarpur) wise login
+
+3.Dashbord
+	all sell
+	by month 
+	by day
+
+4. employe delay update
+1. 4 wheelar bracket :	
+
+amazon strim lime , jafar ,  mokay blue 
+25000
+
+24000
+10pm 
+
+A26 30 ::   
+

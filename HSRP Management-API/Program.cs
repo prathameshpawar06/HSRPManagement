@@ -1,33 +1,34 @@
-﻿using HSRP_DAL.DBContext;
+﻿using HSRP_BAL.IServices;
+using HSRP_BAL.Services;
+using HSRP_DAL.DBContext;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<HSRPDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings")));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings"), b => b.MigrationsAssembly("HSRP Management-API")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+//Inject services 
+builder.Services.AddScoped<IApplicationUserServices, ApplicationUserServices>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (!app.Environment.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-//    app.UseHsts();
-//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    //app.UseSwaggerUI(); // for visual UI
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -35,17 +36,18 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.UseAuthorization(); // ✅ This now works correctly
-
 app.MapControllers(); // ✅ For Web APIs
 
+app.UseDeveloperExceptionPage();
 app.Run();

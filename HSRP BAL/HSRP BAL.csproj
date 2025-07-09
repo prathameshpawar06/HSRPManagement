@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HSRP DAL\HSRP DAL.csproj" />
+  </ItemGroup>
+
 </Project>

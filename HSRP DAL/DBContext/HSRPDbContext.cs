@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HSRP_DAL.DBContext
 {
-    public class HSRPDbContext : IdentityDbContext<ApplicationUser>
+    public class HSRPDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,int>
     {
         public HSRPDbContext(DbContextOptions options) : base(options)
         {

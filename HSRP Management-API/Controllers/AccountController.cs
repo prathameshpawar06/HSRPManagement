@@ -101,7 +101,7 @@ namespace HSRP_Management_API.Controllers
             }
 
             var roles = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "EMP";
-            var token = _jwtService.GenerateToken(user.Id, roles);
+            var token = _jwtService.GenerateToken(user.Id.ToString(), roles);
 
             return Ok(new HsrpResponse("Login Successfull",true, token,null));
         }

@@ -1,9 +1,8 @@
 ﻿using HSRP_BAL.IServices;
 using HSRP_BAL.Services;
 using HSRP_DAL.Domains;
-using HSRP_Management_API.Models;
+using HSRP_DAL.Models;
 using HSRP_Management_API.ResponseModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,11 +59,11 @@ namespace HSRP_Management_API.Controllers
         }
 
         [HttpGet("/getAll")]
-        public async Task<IActionResult>GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
             var list = await _applicationUserServices.GetAllUsers();
 
-            var result = new HsrpResponse("User registration successful.", true, null ,list);
+            var result = new HsrpResponse("User registration successful.", true, null, list);
 
             return Ok(result);
         }
@@ -79,7 +78,7 @@ namespace HSRP_Management_API.Controllers
                 return BadRequest("You must enter either Email or Phone number.");
 
             ApplicationUser? user;
-            if(!string.IsNullOrEmpty(model.PhoneNumber))
+            if (!string.IsNullOrEmpty(model.PhoneNumber))
             {
                 user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
             }
@@ -95,7 +94,7 @@ namespace HSRP_Management_API.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
                 return Unauthorized("Invalid username or password.");
             }
@@ -103,7 +102,7 @@ namespace HSRP_Management_API.Controllers
             var roles = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "EMP";
             var token = _jwtService.GenerateToken(user.Id.ToString(), roles);
 
-            return Ok(new HsrpResponse("Login Successfull",true, token,null));
+            return Ok(new HsrpResponse("Login Successfull", true, token, null));
         }
     }
 }

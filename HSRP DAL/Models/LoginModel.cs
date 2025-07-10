@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HSRP_Management_API.Models
+namespace HSRP_DAL.Models
 {
     public class LoginModel
     {

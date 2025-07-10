@@ -1,12 +1,14 @@
 ﻿using HSRP_BAL.IServices;
 using HSRP_DAL.Models;
 using HSRP_Management_API.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HSRP_Management_API.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
+    [Authorize]
     public class BranchController : ControllerBase
     {
         private readonly IBranchesService _branchesService;

@@ -59,6 +59,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 builder.Services.AddScoped<IApplicationUserServices, ApplicationUserServices>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IBranchesService, BranchesService>();
+builder.Services.AddScoped<IOtpService, OtpService>();
 
 //Jwt Authentication
 builder.Services.AddAuthentication(options =>

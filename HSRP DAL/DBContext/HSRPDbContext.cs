@@ -12,7 +12,7 @@ namespace HSRP_DAL.DBContext
 
         public DbSet<Branches> Branches { get; set; }
         public DbSet<OtpEntry> OtpEntries { get; set; }
-
+        public DbSet<ContactFormRequest> contactFormRequests { get; set; }
     }
 
 }

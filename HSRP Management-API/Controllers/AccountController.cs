@@ -35,7 +35,7 @@ namespace HSRP_Management_API.Controllers
             _otpService = otpService;
         }
 
-        [HttpPost("/registration")]
+        [HttpPost("registration")]
         public async Task<IActionResult> Registration(ApplicationUserModel request)
         {
             if (request == null)
@@ -61,7 +61,7 @@ namespace HSRP_Management_API.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpGet("/getAll")]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUsers()
         {
             var list = await _applicationUserServices.GetAllUsers();
@@ -71,15 +71,15 @@ namespace HSRP_Management_API.Controllers
             return Ok(result);
         }
 
-        [HttpPost("/checkUserByMobileNumber")]
-        public async Task<IActionResult> CheckUserByMobileNumber([FromBody] string mobileNo)
+        [HttpPost("checkUserByMobileNumber")]
+        public async Task<IActionResult> CheckUserByMobileNumber([FromBody] LoginModel model)
         {
-            if(string.IsNullOrWhiteSpace(mobileNo))
+            if(string.IsNullOrWhiteSpace(model.PhoneNumber))
             {
                 return BadRequest("Mobile number is required.");
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == mobileNo);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
             if (user == null)
             {
                 return NotFound("User not found.");
@@ -89,65 +89,13 @@ namespace HSRP_Management_API.Controllers
             {
                 Subject = user.PhoneNumber ?? "",
                 Purpose = "Login",
-                Length = 6,
+                Length = 4,
                 ValidForSeconds = 900, // 5 minutes
                 Metadata = user.Id.ToString()
             });
 
             return Ok(new HsrpResponse("Login Successfull", true, null, user));
         }
-
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    if (!model.IsContactProvided())
-        //        return BadRequest("You must enter either Email or Phone number.");
-
-        //    ApplicationUser? user;
-        //    if (!string.IsNullOrEmpty(model.OTP))
-        //    {
-        //        user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
-        //        if (user == null)
-        //        {
-        //            var res = await _otpService.VerifyOtpAsync(new VerifyOtpRequest
-        //            {
-        //                Subject = model.PhoneNumber ?? "",
-        //                OtpCode = model.OTP,
-        //                Purpose = "Login",
-        //            });
-        //        }
-        //    }
-        //    else
-        //    {
-        //        user = await _userManager.FindByNameAsync(model.Username ?? "");
-        //        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-        //    }
-
-        //    if (user == null)
-        //    {
-        //        return Unauthorized("Invalid username or password.");
-        //    }
-
-        //    if(!string.IsNullOrEmpty(model.OTP))
-        //    {
-                
-        //    }
-
-        //    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return Unauthorized("Invalid username or password.");
-        //    }
-
-        //    var roles = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "EMP";
-        //    var token = _jwtService.GenerateToken(user.Id.ToString(), roles);
-
-        //    return Ok(new HsrpResponse("Login Successfull", true, token, null));
-        //}
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
